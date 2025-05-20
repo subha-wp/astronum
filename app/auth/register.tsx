@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Button } from "@/components/ui/Button";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
 import { useTranslation } from "@/hooks/useTranslation";

@@ -3,7 +3,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useNumerologyStore } from "@/store/numerologyStore";
 import { StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { GlassmorphicCard } from "../ui/GlassmorphicCard";
+import { GlassmorphicCard } from "./ui/GlassmorphicCard";
 
 interface NumerologyReportProps {
   lifePathNumber: number;
@@ -61,7 +61,7 @@ export const NumerologyReport = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 10,
     padding: 20,
   },
   section: {
@@ -69,21 +69,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: "Poppins-Bold",
-    fontSize: 18,
+    fontSize: 20,
     color: theme.colors.primary,
     marginBottom: 8,
   },
   description: {
     fontFamily: "Poppins-Regular",
-    fontSize: 14,
-    color: "rgba(255, 255, 255, 0.9)",
+    fontSize: 16,
+    color: theme.colors.secondary,
     lineHeight: 22,
     marginBottom: 15,
   },
   subtitle: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 16,
-    color: "#FFFFFF",
+    fontSize: 18,
+    color: theme.colors.tertiary,
     marginBottom: 8,
   },
   listContainer: {
@@ -91,22 +91,22 @@ const styles = StyleSheet.create({
   },
   listItem: {
     fontFamily: "Poppins-Regular",
-    fontSize: 14,
-    color: "rgba(255, 255, 255, 0.9)",
+    fontSize: 16,
+    color: theme.colors.onPrimary,
     marginBottom: 5,
     paddingLeft: 10,
   },
   purposeText: {
     fontFamily: "Poppins-Regular",
-    fontSize: 14,
-    color: "rgba(255, 255, 255, 0.9)",
+    fontSize: 16,
+    color: theme.colors.tertiary,
     fontStyle: "italic",
     lineHeight: 22,
-    paddingLeft: 10,
+    paddingLeft: 5,
   },
   divider: {
     height: 1,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    backgroundColor: theme.colors.firstGradient,
     marginVertical: 20,
   },
 });

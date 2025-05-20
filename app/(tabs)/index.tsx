@@ -11,6 +11,7 @@ import {
 } from "@/utils/numerologyCalculations";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ScrollView,
@@ -141,7 +142,9 @@ export default function HomeScreen() {
             }
             icon="file-text"
             delay={900}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/numerology-report");
+            }}
           />
           <FeatureCard
             title={t("features.compatibility")}
