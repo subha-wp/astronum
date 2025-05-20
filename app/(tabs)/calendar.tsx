@@ -2,7 +2,8 @@
 /* eslint-disable @typescript-eslint/array-type */
 import { CalendarDay } from "@/components/calendar/CalendarDay";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
-import { useTheme } from "@/contexts/ThemeContext";
+import { theme } from "@/constants/theme";
+
 import { useTranslation } from "@/hooks/useTranslation";
 import { calculateDayNumber } from "@/utils/numerologyCalculations";
 import { LinearGradient } from "expo-linear-gradient";
@@ -24,7 +25,6 @@ import Animated, { FadeInLeft, FadeInUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function CalendarScreen() {
-  const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -114,7 +114,7 @@ export default function CalendarScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View style={[styles.container]}>
       <LinearGradient
         colors={[
           "rgba(138, 79, 255, 0.8)",
@@ -144,13 +144,13 @@ export default function CalendarScreen() {
         >
           <View style={styles.monthSelector}>
             <TouchableOpacity onPress={goToPreviousMonth}>
-              <ChevronLeft color={theme.text} size={24} />
+              <ChevronLeft color={theme.colors.primary} size={24} />
             </TouchableOpacity>
-            <Text style={[styles.monthTitle, { color: theme.text }]}>
+            <Text style={[styles.monthTitle, { color: theme.colors.primary }]}>
               {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
             </Text>
             <TouchableOpacity onPress={goToNextMonth}>
-              <ChevronRight color={theme.text} size={24} />
+              <ChevronRight color={theme.colors.primary} size={24} />
             </TouchableOpacity>
           </View>
 
@@ -158,7 +158,7 @@ export default function CalendarScreen() {
             {weekdays.map((weekday) => (
               <Text
                 key={weekday}
-                style={[styles.weekday, { color: theme.textSecondary }]}
+                style={[styles.weekday, { color: theme.colors.secondary }]}
               >
                 {weekday}
               </Text>
@@ -280,35 +280,31 @@ const styles = StyleSheet.create({
   subtitle: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
+    color: theme.colors.secondary,
     marginTop: 5,
   },
   scrollView: {
     flex: 1,
-    marginTop: -20,
+    marginTop: 20,
     paddingHorizontal: 20,
   },
   calendarContainer: {
     marginTop: 10,
     marginBottom: 20,
     padding: 15,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    backgroundColor: theme.colors.onPrimary,
   },
   monthSelector: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 15,
     marginBottom: 15,
   },
   monthTitle: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 18,
+    fontSize: 16,
   },
   weekdaysHeader: {
     flexDirection: "row",
@@ -352,14 +348,14 @@ const styles = StyleSheet.create({
   dayDetailMessage: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.9)",
+    color: theme.colors.primary,
     marginBottom: 15,
     lineHeight: 22,
   },
   dayNumerologyInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    // backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 15,
     padding: 15,
   },
@@ -391,14 +387,14 @@ const styles = StyleSheet.create({
   premiumPromoTitle: {
     fontFamily: "Poppins-Bold",
     fontSize: 18,
-    color: "#FFFFFF",
+    color: theme.colors.primary,
     marginBottom: 10,
     textAlign: "center",
   },
   premiumPromoDescription: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
+    color: theme.colors.secondary,
     marginBottom: 20,
     textAlign: "center",
     lineHeight: 20,

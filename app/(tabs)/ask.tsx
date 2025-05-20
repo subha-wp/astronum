@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
-import { useTheme } from "@/contexts/ThemeContext";
+import { theme } from "@/constants/theme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useUserStore } from "@/store/userStore";
 import { mockAiResponse } from "@/utils/mockAiResponses";
@@ -26,7 +27,6 @@ interface Message {
 }
 
 export default function AskAIScreen() {
-  const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const { user } = useUserStore();
@@ -45,7 +45,7 @@ export default function AskAIScreen() {
       sender: "ai" as const,
     };
     setMessages([initialMessage]);
-  }, [t, user]);
+  }, []);
 
   const handleSend = async () => {
     if (!inputText.trim()) return;
@@ -83,7 +83,7 @@ export default function AskAIScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View style={[styles.container]}>
       <LinearGradient
         colors={[
           "rgba(59, 71, 201, 0.8)",
@@ -130,7 +130,7 @@ export default function AskAIScreen() {
                 <View
                   style={[
                     styles.userMessage,
-                    { backgroundColor: theme.primary },
+                    { backgroundColor: theme.colors.primaryContainer },
                   ]}
                 >
                   <Text style={styles.messageText}>{message.text}</Text>
@@ -154,16 +154,19 @@ export default function AskAIScreen() {
         <View
           style={[
             styles.inputContainer,
-            { backgroundColor: theme.backgroundSecondary },
+            { backgroundColor: theme.colors.secondaryContainer },
           ]}
         >
           <TextInput
             style={[
               styles.input,
-              { color: theme.text, backgroundColor: theme.backgroundTertiary },
+              {
+                color: theme.colors.primary,
+                backgroundColor: theme.colors.tertiaryContainer,
+              },
             ]}
             placeholder={t("aiGuru.placeholder")}
-            placeholderTextColor={theme.textSecondary}
+            placeholderTextColor={theme.colors.secondary}
             value={inputText}
             onChangeText={setInputText}
             multiline
@@ -173,8 +176,8 @@ export default function AskAIScreen() {
               styles.sendButton,
               {
                 backgroundColor: inputText.trim()
-                  ? theme.primary
-                  : theme.backgroundTertiary,
+                  ? theme.colors.primaryContainer
+                  : theme.colors.tertiaryContainer,
               },
             ]}
             onPress={handleSend}
@@ -182,7 +185,7 @@ export default function AskAIScreen() {
           >
             <Send
               size={20}
-              color={inputText.trim() ? "#FFFFFF" : theme.textSecondary}
+              color={inputText.trim() ? "#FFFFFF" : theme.colors.secondary}
             />
           </TouchableOpacity>
         </View>
@@ -230,7 +233,7 @@ const styles = StyleSheet.create({
   },
   messagesContainer: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
   },
   messagesContent: {
     paddingTop: 20,
@@ -258,7 +261,7 @@ const styles = StyleSheet.create({
   messageText: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "#FFFFFF",
+    color: theme.colors.primary,
   },
   typingIndicatorWrapper: {
     alignSelf: "flex-start",

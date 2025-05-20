@@ -1,41 +1,48 @@
-import { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
+import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useState } from "react";
+import {
   FlatList,
-  TouchableOpacity,
   Image,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
-import { useTheme } from '@/contexts/ThemeContext';
-import { HeartIcon, MessageCircle, Share2Icon, Users } from 'lucide-react-native';
-import { GlassmorphicCard } from '@/components/ui/GlassmorphicCard';
-import { Badge } from '@/components/ui/Badge';
-import { Button } from '@/components/ui/Button';
-import { useTranslation } from '@/hooks/useTranslation';
-import { useUserStore } from '@/store/userStore';
-import { calculateLifePathNumber } from '@/utils/numerologyCalculations';
-import { generateMockCommunityPosts } from '@/utils/mockData';
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useUserStore } from "@/store/userStore";
+import { generateMockCommunityPosts } from "@/utils/mockData";
+import { calculateLifePathNumber } from "@/utils/numerologyCalculations";
+import {
+  HeartIcon,
+  MessageCircle,
+  Share2Icon,
+  Users,
+} from "lucide-react-native";
+
+import { theme } from "@/constants/theme";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function CommunityScreen() {
-  const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const { user } = useUserStore();
   const [posts, setPosts] = useState<any[]>([]);
-  const [activeFilter, setActiveFilter] = useState('popular');
+  const [activeFilter, setActiveFilter] = useState("popular");
 
   useEffect(() => {
-    const lifePathNumber = user?.dateOfBirth 
-      ? calculateLifePathNumber(user.dateOfBirth) 
+    const lifePathNumber = user?.dateOfBirth
+      ? calculateLifePathNumber(user.dateOfBirth)
       : Math.floor(Math.random() * 9) + 1;
     setPosts(generateMockCommunityPosts(lifePathNumber));
   }, [user]);
 
-  const renderPost = ({ item, index }: { item: any, index: number }) => (
+  const renderPost = ({ item, index }: { item: any; index: number }) => (
     <Animated.View entering={FadeInDown.duration(400).delay(200 + index * 100)}>
       <GlassmorphicCard style={styles.postCard}>
         <View style={styles.postHeader}>
@@ -47,26 +54,32 @@ export default function CommunityScreen() {
               <Text style={styles.userName}>{item.userName}</Text>
               <View style={styles.userNumberContainer}>
                 <Text style={styles.userNumber}>
-                  {t('community.lifePath')} {item.lifePathNumber}
+                  {t("community.lifePath")} {item.lifePathNumber}
                 </Text>
               </View>
             </View>
           </View>
-          <Badge style={item.postType === 'compatibility' ? styles.compatBadge : styles.storyBadge}>
+          <Badge
+            style={
+              item.postType === "compatibility"
+                ? styles.compatBadge
+                : styles.storyBadge
+            }
+          >
             {t(`community.postTypes.${item.postType}`)}
           </Badge>
         </View>
-        
+
         <Text style={styles.postContent}>{item.content}</Text>
-        
+
         {item.imageUrl && (
-          <Image 
-            source={{ uri: item.imageUrl }} 
+          <Image
+            source={{ uri: item.imageUrl }}
             style={styles.postImage}
             resizeMode="cover"
           />
         )}
-        
+
         <View style={styles.postFooter}>
           <TouchableOpacity style={styles.actionButton}>
             <HeartIcon size={20} color="#FFFFFF" />
@@ -85,9 +98,13 @@ export default function CommunityScreen() {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View style={[styles.container]}>
       <LinearGradient
-        colors={['rgba(245, 189, 65, 0.8)', 'rgba(138, 79, 255, 0.5)', 'rgba(59, 71, 201, 0.1)']}
+        colors={[
+          "rgba(245, 189, 65, 0.8)",
+          "rgba(138, 79, 255, 0.5)",
+          "rgba(59, 71, 201, 0.1)",
+        ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={[styles.headerGradient, { paddingTop: insets.top + 10 }]}
@@ -95,17 +112,17 @@ export default function CommunityScreen() {
         <View style={styles.headerContent}>
           <View style={styles.titleContainer}>
             <Users color="#FFFFFF" size={24} />
-            <Text style={styles.title}>{t('community.title')}</Text>
+            <Text style={styles.title}>{t("community.title")}</Text>
           </View>
-          <Text style={styles.subtitle}>{t('community.subtitle')}</Text>
+          <Text style={styles.subtitle}>{t("community.subtitle")}</Text>
         </View>
-        
-        <ScrollView 
-          horizontal 
+
+        <ScrollView
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.filterContainer}
         >
-          {['popular', 'lifePath', 'compatibility', 'stories'].map((filter) => (
+          {["popular", "lifePath", "compatibility", "stories"].map((filter) => (
             <TouchableOpacity
               key={filter}
               onPress={() => setActiveFilter(filter)}
@@ -114,7 +131,7 @@ export default function CommunityScreen() {
                 activeFilter === filter && styles.activeFilterButton,
               ]}
             >
-              <Text 
+              <Text
                 style={[
                   styles.filterText,
                   activeFilter === filter && styles.activeFilterText,
@@ -136,17 +153,21 @@ export default function CommunityScreen() {
         ListHeaderComponent={
           <View style={styles.peopleContainer}>
             <View style={styles.sectionHeader}>
-              <Text style={[styles.sectionTitle, { color: theme.text }]}>
-                {t('community.peopleHeader')}
+              <Text
+                style={[styles.sectionTitle, { color: theme.colors.primary }]}
+              >
+                {t("community.peopleHeader")}
               </Text>
               <TouchableOpacity>
-                <Text style={[styles.seeAllText, { color: theme.primary }]}>
-                  {t('common.seeAll')}
+                <Text
+                  style={[styles.seeAllText, { color: theme.colors.primary }]}
+                >
+                  {t("common.seeAll")}
                 </Text>
               </TouchableOpacity>
             </View>
-            
-            <Animated.View 
+
+            <Animated.View
               style={styles.peopleList}
               entering={FadeInRight.duration(600).delay(300)}
             >
@@ -157,9 +178,7 @@ export default function CommunityScreen() {
                       {String.fromCharCode(65 + index)}
                     </Text>
                   </View>
-                  <Badge style={styles.lifePathBadge}>
-                    {index + 1}
-                  </Badge>
+                  <Badge style={styles.lifePathBadge}>{index + 1}</Badge>
                 </TouchableOpacity>
               ))}
             </Animated.View>
@@ -167,9 +186,8 @@ export default function CommunityScreen() {
         }
         ListFooterComponent={
           <View style={styles.shareExperienceContainer}>
-            <Button 
-              text={t('community.shareExperience')}
-              icon="plus-circle"
+            <Button
+              text={t("community.shareExperience")}
               onPress={() => {}}
               style={styles.shareButton}
             />
@@ -194,19 +212,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   title: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     fontSize: 24,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginLeft: 10,
   },
   subtitle: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: "rgba(255, 255, 255, 0.8)",
     marginTop: 5,
   },
   filterContainer: {
@@ -216,20 +234,20 @@ const styles = StyleSheet.create({
   filterButton: {
     paddingHorizontal: 18,
     paddingVertical: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
     borderRadius: 30,
     marginRight: 10,
   },
   activeFilterButton: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   filterText: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   activeFilterText: {
-    color: '#3B47C9',
+    color: "#3B47C9",
   },
   listContent: {
     paddingHorizontal: 20,
@@ -240,130 +258,128 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 15,
   },
   sectionTitle: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 18,
   },
   seeAllText: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
   },
   peopleList: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   personButton: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   personAvatar: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: 'rgba(138, 79, 255, 0.3)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(138, 79, 255, 0.3)",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 5,
   },
   personAvatarText: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     fontSize: 24,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   lifePathBadge: {
     minWidth: 24,
     height: 24,
-    backgroundColor: '#F5BD41',
+    backgroundColor: "#F5BD41",
   },
   postCard: {
     marginBottom: 20,
     padding: 15,
   },
   postHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 12,
   },
   postUser: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   avatarContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(59, 71, 201, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(59, 71, 201, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 10,
   },
   avatarText: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     fontSize: 18,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   userName: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 14,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   userNumberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   userNumber: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 12,
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: "rgba(255, 255, 255, 0.7)",
   },
   compatBadge: {
-    backgroundColor: '#8A4FFF',
+    backgroundColor: "#8A4FFF",
   },
   storyBadge: {
-    backgroundColor: '#34D399',
+    backgroundColor: "#34D399",
   },
   postContent: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginBottom: 15,
     lineHeight: 20,
   },
   postImage: {
-    width: '100%',
+    width: "100%",
     height: 200,
     borderRadius: 15,
     marginBottom: 15,
   },
   postFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     maxWidth: 200,
   },
   actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   actionText: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     marginLeft: 6,
   },
   shareExperienceContainer: {
     marginTop: 10,
     marginBottom: 40,
-    alignItems: 'center',
+    alignItems: "center",
   },
   shareButton: {
     width: 220,
   },
 });
-
-import { ScrollView } from 'react-native-gesture-handler';

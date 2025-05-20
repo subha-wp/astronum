@@ -1,9 +1,10 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import * as Localization from 'expo-localization';
-import { I18n } from 'i18n-js';
-import { en, hi, bn, ta, mr } from '@/localization';
+//@ts-nocheck
+import { bn, en, hi, mr, ta } from "@/localization";
+import * as Localization from "expo-localization";
+import { I18n } from "i18n-js";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-type LanguageCode = 'en' | 'hi' | 'bn' | 'ta' | 'mr';
+type LanguageCode = "en" | "hi" | "bn" | "ta" | "mr";
 
 interface LanguageContextType {
   language: LanguageCode;
@@ -21,23 +22,27 @@ const translations = {
 
 const i18n = new I18n(translations);
 i18n.enableFallback = true;
-i18n.defaultLocale = 'en';
+i18n.defaultLocale = "en";
 
 const LanguageContext = createContext<LanguageContextType>({
-  language: 'en',
+  language: "en",
   setLanguage: () => {},
   i18n,
 });
 
-export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguageState] = useState<LanguageCode>('en');
+export const LanguageProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [language, setLanguageState] = useState<LanguageCode>("en");
 
   useEffect(() => {
     // Get device locale and set initial language
     const locale = Localization.getLocales()[0].languageCode;
-    const initialLanguage = ['en', 'hi', 'bn', 'ta', 'mr'].includes(locale) 
-      ? locale as LanguageCode 
-      : 'en';
+    const initialLanguage = ["en", "hi", "bn", "ta", "mr"].includes(locale)
+      ? (locale as LanguageCode)
+      : "en";
     setLanguageState(initialLanguage);
   }, []);
 

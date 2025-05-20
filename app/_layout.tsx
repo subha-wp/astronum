@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useFrameworkReady } from '@/hooks/useFrameworkReady';
-import { ThemeProvider } from '@/contexts/ThemeContext';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { useFrameworkReady } from "@/hooks/useFrameworkReady";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   useFrameworkReady();

@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
+import { theme } from "@/constants/theme";
 import { Briefcase, FileText, Heart, TrendingUp } from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
@@ -24,15 +25,15 @@ export const FeatureCard = ({
   const getIcon = () => {
     switch (icon) {
       case "file-text":
-        return <FileText size={24} color="#F5BD41" />;
+        return <FileText size={24} color={theme.colors.primary} />;
       case "heart":
-        return <Heart size={24} color="#F5BD41" />;
+        return <Heart size={24} color={theme.colors.primary} />;
       case "briefcase":
-        return <Briefcase size={24} color="#F5BD41" />;
+        return <Briefcase size={24} color={theme.colors.primary} />;
       case "trending-up":
-        return <TrendingUp size={24} color="#F5BD41" />;
+        return <TrendingUp size={24} color={theme.colors.primary} />;
       default:
-        return <FileText size={24} color="#F5BD41" />;
+        return <FileText size={24} color={theme.colors.primary} />;
     }
   };
 
@@ -68,19 +69,19 @@ const styles = StyleSheet.create({
   },
   card: {
     height: 160,
-    padding: 16,
+    padding: 2,
     justifyContent: "space-between",
   },
   title: {
     fontFamily: "Poppins-SemiBold",
-    fontSize: 16,
-    color: "#FFFFFF",
+    fontSize: 14,
+    color: theme.colors.primary,
     marginTop: 8,
   },
   description: {
     fontFamily: "Poppins-Regular",
     fontSize: 12,
-    color: "rgba(255, 255, 255, 0.8)",
+    color: theme.colors.secondary,
     marginTop: 4,
     lineHeight: 18,
   },

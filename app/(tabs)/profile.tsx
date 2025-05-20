@@ -1,7 +1,10 @@
+// @ts-nocheck
 import { Divider } from "@/components/ui/Divider";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
+import { theme } from "@/constants/theme";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+
 import { useTranslation } from "@/hooks/useTranslation";
 import { useUserStore } from "@/store/userStore";
 import {
@@ -9,6 +12,7 @@ import {
   calculateLifePathNumber,
 } from "@/utils/numerologyCalculations";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import {
   Bell,
   ChevronRight,
@@ -34,7 +38,8 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ProfileScreen() {
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { colorScheme, toggleColorScheme } = useTheme();
+  const isDark = colorScheme === "dark";
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const { user, logout } = useUserStore();
@@ -65,7 +70,7 @@ export default function ProfileScreen() {
         text: t("common.logout"),
         onPress: () => {
           logout();
-          Router.replace("/onboarding");
+          router.replace("/onboarding");
         },
         style: "destructive",
       },
@@ -73,7 +78,12 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: theme.colors.primaryContainer },
+      ]}
+    >
       <LinearGradient
         colors={[
           "rgba(138, 79, 255, 0.8)",
@@ -126,19 +136,21 @@ export default function ProfileScreen() {
             <View style={styles.settingRow}>
               <View style={styles.settingLabelContainer}>
                 {isDark ? (
-                  <Moon size={20} color="#FFFFFF" />
+                  <Moon size={20} color={theme.colors.primary} />
                 ) : (
-                  <Sun size={20} color="#FFFFFF" />
+                  <Sun size={20} color={theme.colors.primary} />
                 )}
-                <Text style={styles.settingLabel}>
+                <Text
+                  style={[styles.settingLabel, { color: theme.colors.primary }]}
+                >
                   {t("settings.darkMode")}
                 </Text>
               </View>
               <Switch
                 value={isDark}
-                onValueChange={toggleTheme}
+                onValueChange={toggleColorScheme}
                 trackColor={{
-                  false: "rgba(255, 255, 255, 0.3)",
+                  false: "rgba(0, 0, 0, 0.1)",
                   true: "rgba(245, 189, 65, 0.5)",
                 }}
                 thumbColor={isDark ? "#F5BD41" : "#FFFFFF"}
@@ -150,17 +162,24 @@ export default function ProfileScreen() {
               onPress={() => setShowLanguages(!showLanguages)}
             >
               <View style={styles.settingLabelContainer}>
-                <Globe size={20} color="#FFFFFF" />
-                <Text style={styles.settingLabel}>
+                <Globe size={20} color={theme.colors.primary} />
+                <Text
+                  style={[styles.settingLabel, { color: theme.colors.primary }]}
+                >
                   {t("settings.language")}
                 </Text>
               </View>
               <View style={styles.settingValueContainer}>
-                <Text style={styles.settingValue}>
+                <Text
+                  style={[
+                    styles.settingValue,
+                    { color: theme.colors.secondary },
+                  ]}
+                >
                   {languageOptions.find((option) => option.code === language)
                     ?.name || "English"}
                 </Text>
-                <ChevronRight size={16} color="#FFFFFF" />
+                <ChevronRight size={16} color={theme.colors.primary} />
               </View>
             </TouchableOpacity>
 
@@ -181,6 +200,7 @@ export default function ProfileScreen() {
                     <Text
                       style={[
                         styles.languageOptionText,
+                        { color: theme.colors.primary },
                         language === option.code && styles.selectedLanguageText,
                       ]}
                     >
@@ -192,7 +212,7 @@ export default function ProfileScreen() {
             )}
           </GlassmorphicCard>
 
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
             {t("profile.subscriptions")}
           </Text>
 
@@ -206,14 +226,32 @@ export default function ProfileScreen() {
               <Text style={styles.premiumBadgeText}>PREMIUM</Text>
             </LinearGradient>
 
-            <Text style={styles.subscriptionTitle}>{t("premium.title")}</Text>
-            <Text style={styles.subscriptionDescription}>
+            <Text
+              style={[
+                styles.subscriptionTitle,
+                { color: theme.colors.primary },
+              ]}
+            >
+              {t("premium.title")}
+            </Text>
+            <Text
+              style={[
+                styles.subscriptionDescription,
+                { color: theme.colors.secondary },
+              ]}
+            >
               {t("premium.fullAccess")}
             </Text>
 
             <View style={styles.subscriptionPrice}>
-              <Text style={styles.priceAmount}>₹499</Text>
-              <Text style={styles.pricePeriod}>
+              <Text
+                style={[styles.priceAmount, { color: theme.colors.primary }]}
+              >
+                ₹499
+              </Text>
+              <Text
+                style={[styles.pricePeriod, { color: theme.colors.secondary }]}
+              >
                 {t("premium.yearlyBilling")}
               </Text>
             </View>
@@ -225,51 +263,63 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </GlassmorphicCard>
 
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
             {t("profile.account")}
           </Text>
 
           <GlassmorphicCard style={styles.menuCard}>
             <TouchableOpacity style={styles.menuItem}>
               <View style={styles.menuItemContent}>
-                <CreditCard size={20} color="#FFFFFF" />
-                <Text style={styles.menuItemText}>{t("profile.payments")}</Text>
+                <CreditCard size={20} color={theme.colors.primary} />
+                <Text
+                  style={[styles.menuItemText, { color: theme.colors.primary }]}
+                >
+                  {t("profile.payments")}
+                </Text>
               </View>
-              <ChevronRight size={16} color="#FFFFFF" />
+              <ChevronRight size={16} color={theme.colors.primary} />
             </TouchableOpacity>
 
             <Divider />
 
             <TouchableOpacity style={styles.menuItem}>
               <View style={styles.menuItemContent}>
-                <Bell size={20} color="#FFFFFF" />
-                <Text style={styles.menuItemText}>
+                <Bell size={20} color={theme.colors.primary} />
+                <Text
+                  style={[styles.menuItemText, { color: theme.colors.primary }]}
+                >
                   {t("profile.notifications")}
                 </Text>
               </View>
-              <ChevronRight size={16} color="#FFFFFF" />
+              <ChevronRight size={16} color={theme.colors.primary} />
             </TouchableOpacity>
 
             <Divider />
 
             <TouchableOpacity style={styles.menuItem}>
               <View style={styles.menuItemContent}>
-                <Shield size={20} color="#FFFFFF" />
-                <Text style={styles.menuItemText}>{t("profile.privacy")}</Text>
+                <Shield size={20} color={theme.colors.primary} />
+                <Text
+                  style={[styles.menuItemText, { color: theme.colors.primary }]}
+                >
+                  {t("profile.privacy")}
+                </Text>
               </View>
-              <ChevronRight size={16} color="#FFFFFF" />
+              <ChevronRight size={16} color={theme.colors.primary} />
             </TouchableOpacity>
 
             <Divider />
 
             <TouchableOpacity style={styles.menuItem}>
               <View style={styles.menuItemContent}>
-                <Heart size={20} color="#FFFFFF" />
-                <Text style={styles.menuItemText}>
+                <Heart size={20} color={theme.colors.primary} />
+                <Text
+                  style={[styles.menuItemText, { color: theme.colors.primary }]}
+                >
                   {t("profile.favorites")}
                 </Text>
               </View>
-              <ChevronRight size={16} color="#FFFFFF" />
+              <ChevronRight size={16} color={theme.colors.primary} />
             </TouchableOpacity>
 
             <Divider />
@@ -285,7 +335,9 @@ export default function ProfileScreen() {
           </GlassmorphicCard>
 
           <View style={styles.versionContainer}>
-            <Text style={styles.versionText}>Numora v1.0.0</Text>
+            <Text style={[styles.versionText, { color: theme.colors.primary }]}>
+              AstroNum v1.0.0
+            </Text>
           </View>
         </Animated.View>
       </ScrollView>
@@ -381,7 +433,6 @@ const styles = StyleSheet.create({
   settingLabel: {
     fontFamily: "Poppins-Medium",
     fontSize: 16,
-    color: "#FFFFFF",
     marginLeft: 12,
   },
   settingValueContainer: {
@@ -391,7 +442,6 @@ const styles = StyleSheet.create({
   settingValue: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
     marginRight: 5,
   },
   languageOptions: {
@@ -411,11 +461,9 @@ const styles = StyleSheet.create({
   languageOptionText: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
   },
   selectedLanguageText: {
     fontFamily: "Poppins-Medium",
-    color: "#FFFFFF",
   },
   sectionTitle: {
     fontFamily: "Poppins-SemiBold",
@@ -446,13 +494,11 @@ const styles = StyleSheet.create({
   subscriptionTitle: {
     fontFamily: "Poppins-Bold",
     fontSize: 22,
-    color: "#FFFFFF",
     marginBottom: 8,
   },
   subscriptionDescription: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
     marginBottom: 15,
     lineHeight: 22,
   },
@@ -464,13 +510,11 @@ const styles = StyleSheet.create({
   priceAmount: {
     fontFamily: "Poppins-Bold",
     fontSize: 28,
-    color: "#F5BD41",
     marginRight: 6,
   },
   pricePeriod: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.8)",
   },
   upgradeButton: {
     backgroundColor: "#F5BD41",
@@ -502,7 +546,6 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontFamily: "Poppins-Medium",
     fontSize: 16,
-    color: "#FFFFFF",
     marginLeft: 12,
   },
   logoutText: {
@@ -515,6 +558,5 @@ const styles = StyleSheet.create({
   versionText: {
     fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: "rgba(255, 255, 255, 0.6)",
   },
 });

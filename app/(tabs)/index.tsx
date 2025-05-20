@@ -2,7 +2,7 @@
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
-import { useTheme } from "@/contexts/ThemeContext";
+import { theme } from "@/constants/theme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useUserStore } from "@/store/userStore";
 import { calculateLifePathNumber } from "@/utils/numerologyCalculations";
@@ -20,7 +20,6 @@ import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const { user } = useUserStore();
   const { t } = useTranslation();
@@ -65,7 +64,7 @@ export default function HomeScreen() {
     : null;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.background }]}>
+    <View style={[styles.container]}>
       <LinearGradient
         colors={[
           "rgba(59, 71, 201, 0.8)",
@@ -98,11 +97,11 @@ export default function HomeScreen() {
         </Animated.View>
 
         <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
             {t("home.explore")}
           </Text>
           <TouchableOpacity>
-            <Text style={[styles.seeAll, { color: theme.primary }]}>
+            <Text style={[styles.seeAll, { color: theme.colors.primary }]}>
               {t("common.seeAll")}
             </Text>
           </TouchableOpacity>
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
   },
   headerGradient: {
     paddingHorizontal: 20,
-    paddingBottom: 30,
+    paddingBottom: 20,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
   },
@@ -228,7 +227,6 @@ const styles = StyleSheet.create({
   },
   categoryCard: {
     width: 100,
-    height: 40,
     marginRight: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -236,7 +234,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: "#FFFFFF",
+    color: theme.colors.primary,
   },
   featuresGrid: {
     flexDirection: "row",
@@ -251,10 +249,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
+    backgroundColor: theme.colors.primaryContainer,
   },
   aiGuruText: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
-    color: "#3B47C9",
+    color: theme.colors.primary,
   },
 });
