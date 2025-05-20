@@ -93,14 +93,13 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
+    marginBottom: 14,
     borderTopWidth: 0,
     elevation: 0,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: -2,
+      height: 0,
     },
     shadowOpacity: 0.1,
     shadowRadius: 3,
