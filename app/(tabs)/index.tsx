@@ -1,75 +1,262 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
+import { FeatureCard } from "@/components/home/FeatureCard";
+import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useUserStore } from "@/store/userStore";
+import { calculateLifePathNumber } from "@/utils/numerologyCalculations";
+import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
+import { useEffect, useState } from "react";
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
+  const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
+  const { user } = useUserStore();
+  const { t } = useTranslation();
+  const [greeting, setGreeting] = useState("");
+  const [dailyNumbers, setDailyNumbers] = useState({
+    lucky: Math.floor(Math.random() * 9) + 1,
+    color: getRandomColor(),
+    vibe: getRandomVibe(),
+  });
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    if (hour < 12) setGreeting(t("greetings.morning"));
+    else if (hour < 18) setGreeting(t("greetings.afternoon"));
+    else setGreeting(t("greetings.evening"));
+  }, [t]);
+
+  function getRandomColor() {
+    const colors = [
+      { name: "Royal Blue", hex: "#3B47C9" },
+      { name: "Purple", hex: "#8A4FFF" },
+      { name: "Gold", hex: "#F5BD41" },
+      { name: "Emerald", hex: "#34D399" },
+      { name: "Ruby Red", hex: "#EF4444" },
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  function getRandomVibe() {
+    const vibes = [
+      t("vibes.creative"),
+      t("vibes.productive"),
+      t("vibes.reflective"),
+      t("vibes.energetic"),
+      t("vibes.social"),
+    ];
+    return vibes[Math.floor(Math.random() * vibes.length)];
+  }
+
+  const lifePathNumber = user?.dateOfBirth
+    ? calculateLifePathNumber(user.dateOfBirth)
+    : null;
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      <LinearGradient
+        colors={[
+          "rgba(59, 71, 201, 0.8)",
+          "rgba(138, 79, 255, 0.5)",
+          "rgba(245, 189, 65, 0.1)",
+        ]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.headerGradient, { paddingTop: insets.top + 10 }]}
+      >
+        <Animated.View entering={FadeInDown.duration(800).delay(200)}>
+          <Text style={styles.greeting}>
+            {greeting}, {user?.name?.split(" ")[0] || t("greetings.user")}
+          </Text>
+          <Text style={styles.subGreeting}>{t("home.dailyReading")}</Text>
+        </Animated.View>
+      </LinearGradient>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        <Animated.View entering={FadeInDown.duration(800).delay(400)}>
+          <DailyPredictionCard
+            luckyNumber={dailyNumbers.lucky}
+            luckyColor={dailyNumbers.color}
+            vibe={dailyNumbers.vibe}
+          />
+        </Animated.View>
+
+        <View style={styles.sectionHeader}>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            {t("home.explore")}
+          </Text>
+          <TouchableOpacity>
+            <Text style={[styles.seeAll, { color: theme.primary }]}>
+              {t("common.seeAll")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoriesContainer}
+        >
+          {["Love", "Career", "Wealth", "Health"].map((category, index) => (
+            <Animated.View
+              key={category}
+              entering={FadeInRight.duration(800).delay(600 + index * 100)}
+            >
+              <GlassmorphicCard style={styles.categoryCard}>
+                <Text style={styles.categoryText}>
+                  {t(`categories.${category.toLowerCase()}`)}
+                </Text>
+              </GlassmorphicCard>
+            </Animated.View>
+          ))}
+        </ScrollView>
+
+        <View style={styles.featuresGrid}>
+          <FeatureCard
+            title={t("features.report")}
+            description={
+              lifePathNumber
+                ? t("features.reportDesc", { number: lifePathNumber })
+                : t("features.reportDescGeneric")
+            }
+            icon="file-text"
+            delay={900}
+            onPress={() => {}}
+          />
+          <FeatureCard
+            title={t("features.compatibility")}
+            description={t("features.compatibilityDesc")}
+            icon="heart"
+            delay={1000}
+            onPress={() => {}}
+          />
+          <FeatureCard
+            title={t("features.business")}
+            description={t("features.businessDesc")}
+            icon="briefcase"
+            delay={1100}
+            onPress={() => {}}
+          />
+          <FeatureCard
+            title={t("features.career")}
+            description={t("features.careerDesc")}
+            icon="trending-up"
+            delay={1200}
+            onPress={() => {}}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.aiGuru}>
+          <BlurView
+            intensity={70}
+            style={StyleSheet.absoluteFill}
+            tint="light"
+          />
+          <View style={styles.aiGuru}>
+            <Text style={styles.aiGuruText}>{t("features.askAiGuru")}</Text>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  headerGradient: {
+    paddingHorizontal: 20,
+    paddingBottom: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  greeting: {
+    fontFamily: "Poppins-Bold",
+    fontSize: 24,
+    color: "#FFFFFF",
+    marginTop: 10,
+  },
+  subGreeting: {
+    fontFamily: "Poppins-Regular",
+    fontSize: 16,
+    color: "rgba(255, 255, 255, 0.8)",
+    marginTop: 5,
+  },
+  scrollView: {
+    flex: 1,
+    marginTop: -20,
+  },
+  scrollContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 100,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
+    marginBottom: 15,
+  },
+  sectionTitle: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 18,
+  },
+  seeAll: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 14,
+  },
+  categoriesContainer: {
+    paddingBottom: 10,
+    paddingRight: 20,
+  },
+  categoryCard: {
+    width: 100,
+    height: 40,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  categoryText: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 14,
+    color: "#FFFFFF",
+  },
+  featuresGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  aiGuru: {
+    height: 60,
+    borderRadius: 30,
+    marginVertical: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  aiGuruText: {
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 16,
+    color: "#3B47C9",
   },
 });
