@@ -1,9 +1,8 @@
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
-import { GlassmorphicCard } from '@/components/ui/GlassmorphicCard';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import { Star, Sparkles } from 'lucide-react-native';
-import { useTranslation } from '@/hooks/useTranslation';
-import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from "@/hooks/useTranslation";
+import { LinearGradient } from "expo-linear-gradient";
+import { Sparkles, Star } from "lucide-react-native";
+import { StyleSheet, Text, View } from "react-native";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 interface DailyPredictionCardProps {
   luckyNumber: number;
@@ -11,104 +10,102 @@ interface DailyPredictionCardProps {
   vibe: string;
 }
 
-const { width } = Dimensions.get('window');
-
-export const DailyPredictionCard = ({ 
-  luckyNumber, 
+export const DailyPredictionCard = ({
+  luckyNumber,
   luckyColor,
-  vibe 
+  vibe,
 }: DailyPredictionCardProps) => {
   const { t } = useTranslation();
 
   return (
-    <GlassmorphicCard style={styles.container}>
+    <View style={styles.container}>
       <LinearGradient
-        colors={['rgba(59, 71, 201, 0.5)', 'rgba(138, 79, 255, 0.5)']}
+        colors={["rgba(59, 71, 201, 0.5)", "rgba(138, 79, 255, 0.5)"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradientBg}
       />
-      
+
       <View style={styles.header}>
-        <Text style={styles.title}>{t('dailyPrediction.title')}</Text>
+        <Text style={styles.title}>{t("dailyPrediction.title")}</Text>
         <Sparkles size={20} color="#F5BD41" />
       </View>
-      
+
       <View style={styles.content}>
         <View style={styles.column}>
           <View style={styles.numberContainer}>
-            <Text style={styles.label}>{t('dailyPrediction.luckyNumber')}</Text>
-            <Animated.View 
-              entering={FadeIn.duration(800)} 
+            <Text style={styles.label}>{t("dailyPrediction.luckyNumber")}</Text>
+            <Animated.View
+              entering={FadeIn.duration(800)}
               style={styles.numberCircle}
             >
               <Text style={styles.number}>{luckyNumber}</Text>
             </Animated.View>
           </View>
         </View>
-        
+
         <View style={styles.column}>
           <View style={styles.colorContainer}>
-            <Text style={styles.label}>{t('dailyPrediction.luckyColor')}</Text>
+            <Text style={styles.label}>{t("dailyPrediction.luckyColor")}</Text>
             <View style={styles.colorInfo}>
-              <View 
+              <View
                 style={[
-                  styles.colorSwatch, 
-                  { backgroundColor: luckyColor.hex }
-                ]} 
+                  styles.colorSwatch,
+                  { backgroundColor: luckyColor.hex },
+                ]}
               />
               <Text style={styles.colorName}>{luckyColor.name}</Text>
             </View>
           </View>
-          
+
           <View style={styles.vibeContainer}>
-            <Text style={styles.label}>{t('dailyPrediction.vibe')}</Text>
+            <Text style={styles.label}>{t("dailyPrediction.vibe")}</Text>
             <Text style={styles.vibe}>{vibe}</Text>
           </View>
         </View>
       </View>
-      
+
       <View style={styles.starsContainer}>
         <Star size={14} color="#F5BD41" fill="#F5BD41" />
         <Star size={16} color="#F5BD41" fill="#F5BD41" />
         <Star size={14} color="#F5BD41" fill="#F5BD41" />
       </View>
-      
-      <Text style={styles.predictionText}>
-        {t('dailyPrediction.message')}
-      </Text>
-    </GlassmorphicCard>
+
+      <Text style={styles.predictionText}>{t("dailyPrediction.message")}</Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 24,
     padding: 0,
-    position: 'relative',
-    overflow: 'hidden',
+    position: "relative",
+    overflow: "hidden",
+    zIndex: 20,
+    borderRadius: 10,
   },
   gradientBg: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0.7,
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    // opacity: 0.7,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 15,
     paddingBottom: 10,
   },
   title: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     fontSize: 18,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   content: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10,
   },
   column: {
@@ -116,38 +113,38 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   numberContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 15,
   },
   label: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: "Poppins-Medium",
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: "rgba(255, 255, 255, 0.8)",
     marginBottom: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   numberCircle: {
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: 'rgba(245, 189, 65, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(245, 189, 65, 0.2)",
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 2,
-    borderColor: '#F5BD41',
+    borderColor: "#F5BD41",
   },
   number: {
-    fontFamily: 'Poppins-Bold',
+    fontFamily: "Poppins-Bold",
     fontSize: 36,
-    color: '#F5BD41',
+    color: "#F5BD41",
   },
   colorContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 15,
   },
   colorInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   colorSwatch: {
     width: 24,
@@ -155,34 +152,34 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: 8,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: "rgba(255, 255, 255, 0.3)",
   },
   colorName: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   vibeContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   vibe: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: "Poppins-SemiBold",
     fontSize: 16,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
   starsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 5,
   },
   predictionText: {
-    fontFamily: 'Poppins-Regular',
+    fontFamily: "Poppins-Regular",
     fontSize: 14,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     lineHeight: 22,
     paddingHorizontal: 20,
     paddingVertical: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

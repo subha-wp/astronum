@@ -1,7 +1,6 @@
 //@ts-nocheck
 import { Button } from "@/components/ui/Button";
 import { DateInput } from "@/components/ui/DateInput";
-import { DatePicker } from "@/components/ui/DatePicker";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
 import { Modal } from "@/components/ui/Modal";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -89,7 +88,7 @@ export default function OnboardingScreen() {
     null
   );
   const [interests, setInterests] = useState<string[]>([]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const lottieRef = useRef<LottieView>(null);
 
   const languageOptions = [
@@ -328,26 +327,6 @@ export default function OnboardingScreen() {
           onPress={handleNext}
         />
       </View>
-
-      <Modal
-        visible={showDatePicker}
-        onClose={() => setShowDatePicker(false)}
-        title={t("onboarding.selectDateOfBirth")}
-      >
-        <DatePicker
-          value={dateOfBirth || new Date()}
-          onChange={(date) => {
-            console.log("Date selected:", date);
-            setDateOfBirth(date);
-            // Add a small delay before closing the modal to ensure the date is properly set
-            setTimeout(() => {
-              setShowDatePicker(false);
-            }, 100);
-          }}
-          minYear={1930}
-          maxYear={new Date().getFullYear() - 13} // Limit to users at least 13 years old
-        />
-      </Modal>
 
       <Modal visible={currentStep === 5} onClose={() => {}}>
         <View style={styles.completionContainer}>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { FeatureCard } from "@/components/home/FeatureCard";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
@@ -9,7 +10,6 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import {
-  Dimensions,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,8 +18,6 @@ import {
 } from "react-native";
 import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const { width } = Dimensions.get("window");
 
 export default function HomeScreen() {
   const { theme } = useTheme();
