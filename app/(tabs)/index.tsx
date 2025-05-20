@@ -5,7 +5,10 @@ import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
 import { theme } from "@/constants/theme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useUserStore } from "@/store/userStore";
-import { calculateLifePathNumber } from "@/utils/numerologyCalculations";
+import {
+  calculateDestinyNumber,
+  calculateLifePathNumber,
+} from "@/utils/numerologyCalculations";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
@@ -62,6 +65,8 @@ export default function HomeScreen() {
   const lifePathNumber = user?.dateOfBirth
     ? calculateLifePathNumber(user.dateOfBirth)
     : null;
+
+  const destinyNumber = user?.name ? calculateDestinyNumber(user.name) : null;
 
   return (
     <View style={[styles.container]}>
