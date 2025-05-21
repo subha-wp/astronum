@@ -161,6 +161,12 @@ export const en = {
     career: "Career Guide",
     careerDesc: "Discover professions that align with your numerology profile.",
     askAiGuru: "Ask AI Guru",
+    health: "Health Guide",
+    healthDesc:
+      "Discover your numerological health profile and wellness recommendations.",
+    wealth: "Wealth Guide",
+    wealthDesc:
+      "Unlock your prosperity potential and financial opportunities through numerology.",
   },
   community: {
     title: "Community",

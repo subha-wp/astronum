@@ -1,14 +1,28 @@
 // @ts-nocheck
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
 import { theme } from "@/constants/theme";
-import { Briefcase, FileText, Heart, TrendingUp } from "lucide-react-native";
+import {
+  Briefcase,
+  FileText,
+  Heart,
+  HeartPulse,
+  IndianRupee,
+  Infinity,
+  TrendingUp,
+} from "lucide-react-native";
 import { StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
 interface FeatureCardProps {
   title: string;
   description: string;
-  icon: "file-text" | "heart" | "briefcase" | "trending-up";
+  icon:
+    | "file-text"
+    | "heart"
+    | "briefcase"
+    | "trending-up"
+    | "heart-pulse"
+    | "indian-rupee";
   onPress: () => void;
   style?: ViewStyle;
   delay?: number;
@@ -25,13 +39,17 @@ export const FeatureCard = ({
   const getIcon = () => {
     switch (icon) {
       case "file-text":
-        return <FileText size={24} color={theme.colors.primary} />;
+        return <Infinity size={24} color={theme.colors.primary} />;
       case "heart":
-        return <Heart size={24} color={theme.colors.primary} />;
+        return <Heart size={24} fill="#FF0000" color="#FF0000" />;
       case "briefcase":
-        return <Briefcase size={24} color={theme.colors.primary} />;
+        return <Briefcase size={24} color={theme.colors.secondary} />;
       case "trending-up":
-        return <TrendingUp size={24} color={theme.colors.primary} />;
+        return <TrendingUp size={24} color="#00FF00" />;
+      case "heart-pulse":
+        return <HeartPulse size={24} color="#93c572" />;
+      case "indian-rupee":
+        return <IndianRupee size={24} color="#157811" />;
       default:
         return <FileText size={24} color={theme.colors.primary} />;
     }

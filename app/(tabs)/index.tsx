@@ -144,6 +144,20 @@ export default function HomeScreen() {
             delay={1200}
             onPress={() => router.push("/career-guide")}
           />
+          <FeatureCard
+            title={t("features.health")}
+            description={t("features.healthDesc")}
+            icon="heart-pulse"
+            delay={1300}
+            onPress={() => router.push("/health")}
+          />
+          <FeatureCard
+            title={t("features.wealth")}
+            description={t("features.wealthDesc")}
+            icon="indian-rupee"
+            delay={1400}
+            onPress={() => router.push("/wealth")}
+          />
         </View>
 
         <TouchableOpacity style={styles.aiGuru}>
