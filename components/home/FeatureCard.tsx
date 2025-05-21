@@ -47,7 +47,7 @@ export const FeatureCard = ({
       case "trending-up":
         return <TrendingUp size={24} color="#00FF00" />;
       case "heart-pulse":
-        return <HeartPulse size={24} color="#93c572" />;
+        return <HeartPulse size={24} color="#93C572" />;
       case "indian-rupee":
         return <IndianRupee size={24} color="#157811" />;
       default:
