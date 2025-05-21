@@ -151,7 +151,9 @@ export default function HomeScreen() {
             description={t("features.compatibilityDesc")}
             icon="heart"
             delay={1000}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/compatibility");
+            }}
           />
           <FeatureCard
             title={t("features.business")}

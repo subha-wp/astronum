@@ -80,8 +80,8 @@ export const DateInput = ({
           value={inputValue}
           onChangeText={handleChangeText}
           placeholder={placeholder || t("dateInput.placeholder")}
-          placeholderTextColor="rgba(255, 255, 255, 0.6)"
           keyboardType="number-pad"
+          placeholderTextColor="#808080"
           maxLength={10} // DD-MM-YYYY = 10 chars
         />
       </GlassmorphicCard>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Poppins-Regular",
     fontSize: 16,
-    color: "#FFFFFF",
+
     height: 50,
     paddingHorizontal: 15,
   },

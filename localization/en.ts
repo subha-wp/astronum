@@ -195,4 +195,17 @@ export const en = {
     energetic: "Energetic",
     social: "Social",
   },
+  compatibility: {
+    title: "Compatibility Check",
+    subtitle: "Discover your numerological compatibility with others",
+    partnerName: "Partner's Name",
+    namePlaceholder: "Enter partner's full name",
+    partnerDOB: "Partner's Date of Birth",
+    dobPlaceholder: "Select partner's date of birth",
+    calculate: "Calculate Compatibility",
+    match: "Match",
+    strengths: "Relationship Strengths",
+    challenges: "Potential Challenges",
+    remedies: "Recommendations for Growth",
+  },
 };
