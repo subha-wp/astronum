@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: "Poppins-Regular",
     fontSize: 16,
-
+    color: "#FFFFFF",
     height: 50,
     paddingHorizontal: 15,
   },

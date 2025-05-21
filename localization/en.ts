@@ -23,12 +23,28 @@ export const en = {
     purpose: "Life Purpose",
     noData: "Please complete your profile to view your numerology report",
   },
+  dateInput: {
+    placeholder: "Enter your date of birth",
+    format: "Format: DD-MM-YYYY",
+    invalidDate: "Please enter a valid date",
+    incomplete: "Please complete the date",
+  },
   tabs: {
     home: "Home",
     calendar: "Calendar",
     ask: "Ask AI",
     community: "Community",
     profile: "Profile",
+  },
+  business: {
+    title: "Business Advisor",
+    subtitle: "Discover your ideal business path based on numerology",
+    bestIndustries: "Best Industries for You",
+    businessQualities: "Your Business Qualities",
+    nameNumbers: "Lucky Business Name Numbers",
+    nameNumbersDesc:
+      "Include these numbers in your business name calculation for better success alignment",
+    challenges: "Areas for Growth",
   },
   onboarding: {
     languageTitle: "Choose Your Language",

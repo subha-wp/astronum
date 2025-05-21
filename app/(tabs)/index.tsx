@@ -160,7 +160,7 @@ export default function HomeScreen() {
             description={t("features.businessDesc")}
             icon="briefcase"
             delay={1100}
-            onPress={() => {}}
+            onPress={() => router.push("/business-advisor")}
           />
           <FeatureCard
             title={t("features.career")}
