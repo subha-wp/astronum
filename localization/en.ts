@@ -46,6 +46,13 @@ export const en = {
       "Include these numbers in your business name calculation for better success alignment",
     challenges: "Areas for Growth",
   },
+  career: {
+    title: "Career Guide",
+    keySkills: "Key Skills & Strengths",
+    industries: "Recommended Industries",
+    challenges: "Career Challenges",
+    growth: "Growth Opportunities",
+  },
   onboarding: {
     languageTitle: "Choose Your Language",
     languageSubtitle: "Select your preferred language for using Numora.",

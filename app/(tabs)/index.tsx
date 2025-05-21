@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DailyPredictionCard } from "@/components/home/DailyPredictionCard";
 import { FeatureCard } from "@/components/home/FeatureCard";
-import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
 import { theme } from "@/constants/theme";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useUserStore } from "@/store/userStore";
@@ -20,7 +19,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Animated, { FadeInDown, FadeInRight } from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -106,31 +105,7 @@ export default function HomeScreen() {
           <Text style={[styles.sectionTitle, { color: theme.colors.primary }]}>
             {t("home.explore")}
           </Text>
-          <TouchableOpacity>
-            <Text style={[styles.seeAll, { color: theme.colors.primary }]}>
-              {t("common.seeAll")}
-            </Text>
-          </TouchableOpacity>
         </View>
-
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoriesContainer}
-        >
-          {["Love", "Career", "Wealth", "Health"].map((category, index) => (
-            <Animated.View
-              key={category}
-              entering={FadeInRight.duration(800).delay(600 + index * 100)}
-            >
-              <GlassmorphicCard style={styles.categoryCard}>
-                <Text style={styles.categoryText}>
-                  {t(`categories.${category.toLowerCase()}`)}
-                </Text>
-              </GlassmorphicCard>
-            </Animated.View>
-          ))}
-        </ScrollView>
 
         <View style={styles.featuresGrid}>
           <FeatureCard
@@ -167,7 +142,7 @@ export default function HomeScreen() {
             description={t("features.careerDesc")}
             icon="trending-up"
             delay={1200}
-            onPress={() => {}}
+            onPress={() => router.push("/career-guide")}
           />
         </View>
 
@@ -227,30 +202,11 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-SemiBold",
     fontSize: 18,
   },
-  seeAll: {
-    fontFamily: "Poppins-Medium",
-    fontSize: 14,
-  },
-  categoriesContainer: {
-    paddingBottom: 10,
-    paddingRight: 20,
-  },
-  categoryCard: {
-    width: 100,
-    marginRight: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  categoryText: {
-    fontFamily: "Poppins-Medium",
-    fontSize: 14,
-    color: theme.colors.primary,
-  },
+
   featuresGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    marginTop: 20,
   },
   aiGuru: {
     height: 60,
