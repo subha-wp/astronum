@@ -3,7 +3,13 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
-import { Brain, Calendar, Chrome as Home, User } from "lucide-react-native";
+import {
+  Brain,
+  Calendar,
+  Compass,
+  Chrome as Home,
+  User,
+} from "lucide-react-native";
 import { Platform, StyleSheet } from "react-native";
 import { useAnimatedStyle, withTiming } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -64,13 +70,22 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="explore"
+        options={{
+          title: t("tabs.explore"),
+          tabBarIcon: ({ color, size }) => (
+            <Compass size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="ask"
         options={{
           title: t("tabs.ask"),
           tabBarIcon: ({ color, size }) => <Brain size={size} color={color} />,
         }}
       />
-
       <Tabs.Screen
         name="profile"
         options={{
@@ -86,7 +101,6 @@ const styles = StyleSheet.create({
   tabBar: {
     position: "absolute",
     borderTopWidth: 0,
-
     elevation: 0,
     shadowColor: "#000",
     shadowOffset: {

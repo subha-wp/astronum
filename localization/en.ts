@@ -14,6 +14,18 @@ export const en = {
     evening: "Good Evening",
     user: "Friend",
   },
+  tabs: {
+    home: "Home",
+    explore: "Explore",
+    calendar: "Calendar",
+    ask: "Ask AI",
+    community: "Community",
+    profile: "Profile",
+  },
+  explore: {
+    title: "Explore Features",
+    subtitle: "Discover all our numerology tools and insights",
+  },
   numerology: {
     title: "Your Numerology Report",
     subtitle: "Discover your life path and destiny numbers",
@@ -28,13 +40,6 @@ export const en = {
     format: "Format: DD-MM-YYYY",
     invalidDate: "Please enter a valid date",
     incomplete: "Please complete the date",
-  },
-  tabs: {
-    home: "Home",
-    calendar: "Calendar",
-    ask: "Ask AI",
-    community: "Community",
-    profile: "Profile",
   },
   business: {
     title: "Business Advisor",
