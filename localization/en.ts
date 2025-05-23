@@ -25,6 +25,108 @@ export const en = {
   explore: {
     title: "Explore Features",
     subtitle: "Discover all our numerology tools and insights",
+    remedies: {
+      title: "Numerological Remedies",
+      subtitle: "Ancient wisdom for modern harmony",
+      categories: {
+        love: {
+          title: "Love & Relationships",
+          remedies: [
+            {
+              title: "Rose Quartz Ritual",
+              description:
+                "Place a rose quartz crystal under your pillow during the waxing moon phase to attract love and heal relationship wounds.",
+              items: ["Rose quartz crystal", "Moonlight", "Pure intentions"],
+            },
+            {
+              title: "Number Activation",
+              description:
+                "Write your desired partner's qualities 9 times daily for 28 days to manifest compatible love.",
+              items: ["Red ink pen", "White paper", "Dedicated practice"],
+            },
+            {
+              title: "Venus Day Meditation",
+              description:
+                "Meditate on Fridays (Venus day) with pink candles to enhance romantic energy.",
+              items: ["Pink candles", "Peaceful space", "Friday timing"],
+            },
+          ],
+        },
+        wealth: {
+          title: "Wealth & Prosperity",
+          remedies: [
+            {
+              title: "Abundance Grid",
+              description:
+                "Create a crystal grid using your personal number pattern to attract wealth.",
+              items: [
+                "Citrine crystals",
+                "Clear quartz",
+                "Sacred geometry pattern",
+              ],
+            },
+            {
+              title: "Jupiter Hour Ritual",
+              description:
+                "Perform money affirmations during Jupiter hours on Thursdays for maximum effect.",
+              items: ["Yellow candle", "Cinnamon", "Jupiter hour timing"],
+            },
+            {
+              title: "Number Manifestation",
+              description:
+                "Write your desired income 108 times using golden ink during the waxing moon.",
+              items: ["Golden ink", "Fresh paper", "Clear intention"],
+            },
+          ],
+        },
+        career: {
+          title: "Career & Success",
+          remedies: [
+            {
+              title: "Success Yantra",
+              description:
+                "Draw your career number yantra and meditate on it daily for professional growth.",
+              items: ["Sacred geometry tools", "Red ink", "Focused intention"],
+            },
+            {
+              title: "Mercury Activation",
+              description:
+                "Perform career affirmations on Wednesdays during Mercury hours.",
+              items: ["Green candle", "Mercury hour timing", "Clear goals"],
+            },
+            {
+              title: "Professional Alignment",
+              description:
+                "Arrange your workspace according to your personal number's favorable directions.",
+              items: ["Compass", "Office items", "Personal number"],
+            },
+          ],
+        },
+        health: {
+          title: "Health & Vitality",
+          remedies: [
+            {
+              title: "Healing Number Sequence",
+              description:
+                "Chant your healing number sequence 108 times during sunrise.",
+              items: ["Sunrise timing", "Healing intention", "Quiet space"],
+            },
+            {
+              title: "Energy Balancing",
+              description:
+                "Place corresponding crystals on chakra points based on your life path number.",
+              items: ["Chakra crystals", "Quiet space", "30 minutes time"],
+            },
+            {
+              title: "Vitality Grid",
+              description:
+                "Create a health-focused crystal grid using your personal number pattern.",
+              items: ["Clear quartz", "Amethyst", "Sacred geometry"],
+            },
+          ],
+        },
+      },
+    },
   },
   numerology: {
     title: "Your Numerology Report",
