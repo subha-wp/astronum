@@ -344,4 +344,14 @@ export const en = {
     challenges: "Potential Challenges",
     remedies: "Recommendations for Growth",
   },
+  mobile: {
+    title: "Phone Number Analysis",
+    subtitle: "Discover the numerological influence of your phone number",
+    numberPlaceholder: "Enter phone number",
+    analyze: "Analyze Number",
+    numerologyValue: "Numerology Value",
+    suggestions: "Suggestions",
+    luckyNumbers: "Lucky Numbers",
+    unluckyNumbers: "Unlucky Numbers",
+  },
 };

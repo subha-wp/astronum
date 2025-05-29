@@ -80,8 +80,8 @@ export default function ExploreScreen() {
       color: "#157811",
     },
     {
-      title: "Phone number analysis",
-      description: t("features.wealthDesc"),
+      title: t("mobile.title"),
+      description: t("mobile.subtitle"),
       icon: Smartphone,
       route: "/mobile",
       color: "#157811",
