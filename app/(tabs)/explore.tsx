@@ -13,6 +13,7 @@ import {
   HeartPulse,
   IndianRupee,
   Infinity,
+  Smartphone,
   Sparkles,
   TrendingUp,
 } from "lucide-react-native";
@@ -76,6 +77,13 @@ export default function ExploreScreen() {
       description: t("features.wealthDesc"),
       icon: IndianRupee,
       route: "/wealth",
+      color: "#157811",
+    },
+    {
+      title: "Phone number analysis",
+      description: t("features.wealthDesc"),
+      icon: Smartphone,
+      route: "/mobile",
       color: "#157811",
     },
   ];
