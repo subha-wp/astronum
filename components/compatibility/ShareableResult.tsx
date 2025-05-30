@@ -1,5 +1,4 @@
 /* eslint-disable react/display-name */
-
 import { LinearGradient } from "expo-linear-gradient";
 import { Heart } from "lucide-react-native";
 import React from "react";
@@ -20,44 +19,61 @@ export const ShareableResult = React.forwardRef<View, ShareableResultProps>(
       <View ref={ref} style={styles.container}>
         <LinearGradient
           colors={[
-            "rgba(255, 105, 180, 0.9)",
-            "rgba(138, 79, 255, 0.8)",
-            "rgba(59, 71, 201, 0.6)",
+            "rgba(255, 105, 180, 0.95)",
+            "rgba(147, 112, 219, 0.9)",
+            "rgba(138, 43, 226, 0.85)",
           ]}
           style={styles.gradient}
         >
           <View style={styles.content}>
             <View style={styles.header}>
-              <Text style={styles.logo}>AstroNum</Text>
-              <Text style={styles.title}>Love Compatibility</Text>
+              <Text style={styles.logo}>Love Match</Text>
+              <Text style={styles.subtitle}>by AstroNum</Text>
             </View>
 
             <View style={styles.namesContainer}>
               <Text style={styles.name}>{person1Name}</Text>
-              <Heart size={32} color="#FFFFFF" fill="#FFFFFF" />
+              <View style={styles.heartContainer}>
+                <Heart size={40} color="#FFFFFF" fill="#FFFFFF" />
+                <Text style={styles.percentage}>{percentage}%</Text>
+              </View>
               <Text style={styles.name}>{person2Name}</Text>
             </View>
 
-            <View style={styles.percentageContainer}>
-              <Text style={styles.percentage}>{percentage}%</Text>
-              <Text style={styles.match}>Soul Match</Text>
-            </View>
-
-            <GlassmorphicCard style={styles.descriptionCard}>
+            <GlassmorphicCard style={styles.resultCard}>
+              <Text style={styles.matchText}>Soul Connection</Text>
               <Text style={styles.description}>{description}</Text>
+
+              <View style={styles.strengthsContainer}>
+                <Text style={styles.strengthsTitle}>Love Harmony</Text>
+                {strengths.slice(0, 3).map((strength, index) => (
+                  <View key={index} style={styles.strengthItem}>
+                    <Heart size={16} color="#FF69B4" fill="#FF69B4" />
+                    <Text style={styles.strengthText}>{strength}</Text>
+                  </View>
+                ))}
+              </View>
             </GlassmorphicCard>
 
-            <View style={styles.strengthsContainer}>
-              <Text style={styles.strengthsTitle}>Love Strengths</Text>
-              {strengths.slice(0, 3).map((strength, index) => (
-                <View key={index} style={styles.strengthItem}>
-                  <Heart size={16} color="#FF69B4" fill="#FF69B4" />
-                  <Text style={styles.strengthText}>{strength}</Text>
-                </View>
+            <View style={styles.decorativeHearts}>
+              {[...Array(5)].map((_, i) => (
+                <Heart
+                  key={i}
+                  size={20 + i * 4}
+                  color="#FFFFFF"
+                  fill="#FFFFFF"
+                  style={[
+                    styles.decorativeHeart,
+                    {
+                      opacity: 0.2 + i * 0.1,
+                      transform: [{ rotate: `${i * 15}deg` }],
+                    },
+                  ]}
+                />
               ))}
             </View>
 
-            <Text style={styles.footer}>astronum.app</Text>
+            <Text style={styles.footer}>Find your match at astronum.app</Text>
           </View>
         </LinearGradient>
       </View>
@@ -85,50 +101,63 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontFamily: "Poppins-Bold",
-    fontSize: 32,
+    fontSize: 36,
     color: "#FFFFFF",
-    marginBottom: 8,
+    textShadowColor: "rgba(0, 0, 0, 0.2)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4,
   },
-  title: {
-    fontFamily: "Poppins-SemiBold",
-    fontSize: 24,
-    color: "#FFFFFF",
+  subtitle: {
+    fontFamily: "Poppins-Medium",
+    fontSize: 16,
+    color: "rgba(255, 255, 255, 0.8)",
+    marginTop: 4,
   },
   namesContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 40,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    padding: 20,
+    borderRadius: 30,
   },
   name: {
     fontFamily: "Poppins-Bold",
-    fontSize: 28,
+    fontSize: 24,
     color: "#FFFFFF",
     marginHorizontal: 20,
+    textShadowColor: "rgba(0, 0, 0, 0.2)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
-  percentageContainer: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    borderRadius: 100,
-    width: 160,
-    height: 160,
-    justifyContent: "center",
+  heartContainer: {
     alignItems: "center",
-    marginBottom: 40,
+    justifyContent: "center",
+    width: 80,
+    height: 80,
+    backgroundColor: "rgba(255, 105, 180, 0.3)",
+    borderRadius: 40,
     borderWidth: 2,
     borderColor: "#FFFFFF",
   },
   percentage: {
     fontFamily: "Poppins-Bold",
-    fontSize: 48,
+    fontSize: 20,
     color: "#FFFFFF",
+    position: "absolute",
   },
-  match: {
-    fontFamily: "Poppins-Medium",
-    fontSize: 18,
-    color: "#FFFFFF",
-  },
-  descriptionCard: {
+  resultCard: {
     marginBottom: 40,
-    padding: 20,
+    padding: 24,
+    width: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+  },
+  matchText: {
+    fontFamily: "Poppins-Bold",
+    fontSize: 24,
+    color: "#FFFFFF",
+    textAlign: "center",
+    marginBottom: 16,
   },
   description: {
     fontFamily: "Poppins-Regular",
@@ -136,6 +165,7 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "center",
     lineHeight: 24,
+    marginBottom: 24,
   },
   strengthsContainer: {
     alignItems: "center",
@@ -162,11 +192,20 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     marginLeft: 12,
   },
+  decorativeHearts: {
+    position: "absolute",
+    bottom: 80,
+    right: 40,
+    flexDirection: "row",
+  },
+  decorativeHeart: {
+    marginHorizontal: 4,
+  },
   footer: {
     fontFamily: "Poppins-Medium",
     fontSize: 16,
     color: "rgba(255, 255, 255, 0.8)",
     position: "absolute",
-    bottom: 0,
+    bottom: 20,
   },
 });
