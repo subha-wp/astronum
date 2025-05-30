@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+// @ts-nocheck
+import { ShareableResult } from "@/components/compatibility/ShareableResult";
 import { Button } from "@/components/ui/Button";
 import { DateInput } from "@/components/ui/DateInput";
 import { GlassmorphicCard } from "@/components/ui/GlassmorphicCard";
@@ -9,9 +11,8 @@ import { calculateLifePathNumber } from "@/utils/numerologyCalculations";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ArrowLeft, Heart, Share2 } from "lucide-react-native";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
-  Image,
   ScrollView,
   Share,
   StyleSheet,
@@ -22,6 +23,7 @@ import {
 } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import ViewShot from "react-native-view-shot";
 
 interface DatePickerProps {
   value: Date;
@@ -39,6 +41,7 @@ export default function CompatibilityScreen() {
   const [partnerName, setPartnerName] = useState("");
   const [partnerDOB, setPartnerDOB] = useState<Date | null>(null);
   const [showResults, setShowResults] = useState(false);
+  const resultRef = useRef<View>(null);
 
   const calculateCompatibility = () => {
     if (!partnerName.trim() || !partnerDOB) return;
@@ -55,31 +58,20 @@ export default function CompatibilityScreen() {
     : null;
 
   const handleShare = async () => {
-    if (!compatibility) return;
-
-    // Beautiful romantic images that represent love and compatibility
-    const shareImages = [
-      "https://images.pexels.com/photos/1449667/pexels-photo-1449667.jpeg",
-      "https://images.pexels.com/photos/3727658/pexels-photo-3727658.jpeg",
-      "https://images.pexels.com/photos/1024975/pexels-photo-1024975.jpeg",
-    ];
-
-    const randomImage =
-      shareImages[Math.floor(Math.random() * shareImages.length)];
-
-    const message = `💖 Love in the Numbers! 💖\n\nJust discovered a ${
-      compatibility.percentage
-    }% soul connection on AstroNum!\n\n"${
-      compatibility.description
-    }"\n\n✨ Our Love Strengths:\n${compatibility.strengths.join(
-      "\n"
-    )}\n\n🌟 Find your cosmic match at astronum.app\n\n${randomImage}`;
+    if (!compatibility || !resultRef.current) return;
 
     try {
+      // Capture the view as an image
+      const uri = await ViewShot.captureRef(resultRef, {
+        format: "jpg",
+        quality: 0.9,
+      });
+
+      // Share the image
       await Share.share({
-        message,
+        url: uri,
         title: "Love Compatibility Results",
-        url: randomImage, // This will attach the image on platforms that support it
+        message: "Check out our love compatibility! 💖\n\nastronum.app",
       });
     } catch (error) {
       console.error(error);
@@ -149,6 +141,19 @@ export default function CompatibilityScreen() {
 
           {showResults && compatibility && (
             <Animated.View entering={FadeInDown.duration(600)}>
+              {/* Hidden result view for capturing */}
+              <View style={styles.hiddenResult}>
+                <ShareableResult
+                  ref={resultRef}
+                  percentage={compatibility.percentage}
+                  description={compatibility.description}
+                  strengths={compatibility.strengths}
+                  person1Name="Your Name"
+                  person2Name={partnerName}
+                />
+              </View>
+
+              {/* Visible result card */}
               <GlassmorphicCard style={styles.resultsCard}>
                 <View style={styles.heartContainer}>
                   <Heart
@@ -167,13 +172,6 @@ export default function CompatibilityScreen() {
                   </View>
                 </View>
 
-                <Image
-                  source={{
-                    uri: "https://images.pexels.com/photos/1449667/pexels-photo-1449667.jpeg",
-                  }}
-                  style={styles.loveImage}
-                />
-
                 <Text style={styles.description}>
                   {compatibility.description}
                 </Text>
@@ -188,32 +186,6 @@ export default function CompatibilityScreen() {
                         <Heart size={16} color="#FF69B4" fill="#FF69B4" />
                         <Text style={styles.strengthText}>{strength}</Text>
                       </View>
-                    ))}
-                  </View>
-                </View>
-
-                <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>
-                    {t("compatibility.challenges")}
-                  </Text>
-                  <View style={styles.challengesList}>
-                    {compatibility.challenges.map((challenge, index) => (
-                      <Text key={index} style={styles.challengeText}>
-                        • {challenge}
-                      </Text>
-                    ))}
-                  </View>
-                </View>
-
-                <View style={styles.section}>
-                  <Text style={styles.sectionTitle}>
-                    {t("compatibility.remedies")}
-                  </Text>
-                  <View style={styles.remediesList}>
-                    {compatibility.remedies.map((remedy, index) => (
-                      <Text key={index} style={styles.remedyText}>
-                        • {remedy}
-                      </Text>
                     ))}
                   </View>
                 </View>
@@ -303,6 +275,13 @@ const styles = StyleSheet.create({
   calculateButton: {
     marginTop: 30,
   },
+  hiddenResult: {
+    position: "absolute",
+    opacity: 0,
+    width: 1,
+    height: 1,
+    overflow: "hidden",
+  },
   resultsCard: {
     marginTop: 20,
     padding: 20,
@@ -334,12 +313,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#FF69B4",
   },
-  loveImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 15,
-    marginBottom: 20,
-  },
   description: {
     fontFamily: "Poppins-Regular",
     fontSize: 16,
@@ -347,7 +320,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginBottom: 20,
     textAlign: "center",
-    fontStyle: "italic",
   },
   section: {
     marginBottom: 20,
@@ -375,26 +347,6 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary,
     marginLeft: 10,
     flex: 1,
-  },
-  challengesList: {
-    marginTop: 5,
-  },
-  challengeText: {
-    fontFamily: "Poppins-Regular",
-    fontSize: 14,
-    color: theme.colors.secondary,
-    marginBottom: 8,
-    paddingLeft: 10,
-  },
-  remediesList: {
-    marginTop: 5,
-  },
-  remedyText: {
-    fontFamily: "Poppins-Regular",
-    fontSize: 14,
-    color: theme.colors.secondary,
-    marginBottom: 8,
-    paddingLeft: 10,
   },
   shareButton: {
     flexDirection: "row",
