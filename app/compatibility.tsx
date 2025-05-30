@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 // @ts-nocheck
 import { ShareableResult } from "@/components/compatibility/ShareableResult";
 import { Button } from "@/components/ui/Button";
@@ -9,11 +8,11 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useCompatibilityStore } from "@/store/compatibilityStore";
 import { calculateLifePathNumber } from "@/utils/numerologyCalculations";
 import { LinearGradient } from "expo-linear-gradient";
+import * as MediaLibrary from "expo-media-library";
 import { router } from "expo-router";
-import { ArrowLeft, Heart, Share2 } from "lucide-react-native";
+import { ArrowLeft, Download, Heart, Share2 } from "lucide-react-native";
 import { useRef, useState } from "react";
 import {
-  ScrollView,
   Share,
   StyleSheet,
   Text,
@@ -25,14 +24,6 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ViewShot from "react-native-view-shot";
 
-interface DatePickerProps {
-  value: Date;
-  onChange: (date: Date) => void;
-  minYear?: number;
-  maxYear?: number;
-  onClose?: () => void;
-}
-
 export default function CompatibilityScreen() {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
@@ -42,6 +33,7 @@ export default function CompatibilityScreen() {
   const [partnerDOB, setPartnerDOB] = useState<Date | null>(null);
   const [showResults, setShowResults] = useState(false);
   const resultRef = useRef<View>(null);
+  const viewShotRef = useRef<ViewShot>(null);
 
   const calculateCompatibility = () => {
     if (!partnerName.trim() || !partnerDOB) return;
@@ -57,24 +49,51 @@ export default function CompatibilityScreen() {
     ? getCompatibility(userLifePath, partnerLifePath)
     : null;
 
+  const handleDownload = async () => {
+    if (!compatibility || !viewShotRef.current) return;
+
+    try {
+      // Request permissions first
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== "granted") {
+        alert("Sorry, we need media library permissions to save the image!");
+        return;
+      }
+
+      // Capture the view as an image
+      const uri = await viewShotRef.current.capture();
+
+      // Save to media library
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      await MediaLibrary.createAlbumAsync("AstroNum", asset, false);
+
+      alert("Image saved to your gallery!");
+    } catch (error) {
+      console.error("Error saving image:", error);
+      alert("Failed to save image. Please try again.");
+    }
+  };
+
   const handleShare = async () => {
-    if (!compatibility || !resultRef.current) return;
+    if (!compatibility || !viewShotRef.current) return;
 
     try {
       // Capture the view as an image
-      const uri = await ViewShot.captureRef(resultRef, {
-        format: "jpg",
-        quality: 0.9,
-      });
+      const uri = await viewShotRef.current.capture();
 
       // Share the image
-      await Share.share({
-        url: uri,
+      const result = await Share.share({
+        url: uri, // iOS
+        message: `Check out our love compatibility! 💖\n\nOur match score: ${compatibility.percentage}%\n\nastronum.app`, // Android
         title: "Love Compatibility Results",
-        message: "Check out our love compatibility! 💖\n\nastronum.app",
       });
+
+      if (result.action === Share.sharedAction) {
+        console.log("Shared successfully");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error sharing:", error);
+      alert("Failed to share. Please try again.");
     }
   };
 
@@ -105,7 +124,7 @@ export default function CompatibilityScreen() {
         </View>
       </LinearGradient>
 
-      <ScrollView
+      <Animated.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -141,8 +160,17 @@ export default function CompatibilityScreen() {
 
           {showResults && compatibility && (
             <Animated.View entering={FadeInDown.duration(600)}>
-              {/* Hidden result view for capturing */}
-              <View style={styles.hiddenResult}>
+              {/* Hidden view for capturing */}
+              <ViewShot
+                ref={viewShotRef}
+                options={{
+                  format: "jpg",
+                  quality: 0.9,
+                  width: 600,
+                  height: 800,
+                }}
+                style={[styles.hiddenView]}
+              >
                 <ShareableResult
                   ref={resultRef}
                   percentage={compatibility.percentage}
@@ -151,7 +179,7 @@ export default function CompatibilityScreen() {
                   person1Name="Your Name"
                   person2Name={partnerName}
                 />
-              </View>
+              </ViewShot>
 
               {/* Visible result card */}
               <GlassmorphicCard style={styles.resultsCard}>
@@ -190,20 +218,30 @@ export default function CompatibilityScreen() {
                   </View>
                 </View>
 
-                <TouchableOpacity
-                  style={styles.shareButton}
-                  onPress={handleShare}
-                >
-                  <Share2 size={20} color="#FFFFFF" />
-                  <Text style={styles.shareButtonText}>
-                    {t("compatibility.share")}
-                  </Text>
-                </TouchableOpacity>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.downloadButton]}
+                    onPress={handleDownload}
+                  >
+                    <Download size={20} color="#FFFFFF" />
+                    <Text style={styles.actionButtonText}>Save</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={[styles.actionButton, styles.shareButton]}
+                    onPress={handleShare}
+                  >
+                    <Share2 size={20} color="#FFFFFF" />
+                    <Text style={styles.actionButtonText}>
+                      {t("compatibility.share")}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </GlassmorphicCard>
             </Animated.View>
           )}
         </Animated.View>
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 }
@@ -275,12 +313,12 @@ const styles = StyleSheet.create({
   calculateButton: {
     marginTop: 30,
   },
-  hiddenResult: {
+  hiddenView: {
     position: "absolute",
-    opacity: 0,
-    width: 1,
-    height: 1,
-    overflow: "hidden",
+    width: 600,
+    height: 800,
+    opacity: 1,
+    left: -9999,
   },
   resultsCard: {
     marginTop: 20,
@@ -348,17 +386,28 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
   },
-  shareButton: {
+  actionButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  actionButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FF69B4",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 25,
-    marginTop: 20,
+    flex: 1,
+    marginHorizontal: 5,
   },
-  shareButtonText: {
+  downloadButton: {
+    backgroundColor: "#8A4FFF",
+  },
+  shareButton: {
+    backgroundColor: "#FF69B4",
+  },
+  actionButtonText: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
     color: "#FFFFFF",
